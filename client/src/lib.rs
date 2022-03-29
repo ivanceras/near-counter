@@ -13,6 +13,9 @@ extern "C" {
 
     #[wasm_bindgen(catch)]
     async fn contract_decrement() -> Result<JsValue, JsValue>;
+
+    #[wasm_bindgen(catch)]
+    async fn contract_reset() -> Result<JsValue, JsValue>;
 }
 
 #[derive(Debug)]
@@ -25,10 +28,14 @@ enum Msg {
     IncrementClicked,
     /// the decrement button is clicked
     DecrementClicked,
+    /// the reset button is clicked
+    ResetClicked,
     /// the contract counter successfully incremented
     ContractIncremented,
     /// the contract counter successfully decremented
     ContractDecremented,
+    /// the contract counter successfully reset
+    ContractReset,
 }
 
 struct App {
@@ -81,6 +88,22 @@ impl App {
                     Ok(_) => {
                         log::trace!("decremented contract");
                         program.dispatch(Msg::ContractDecremented);
+                    }
+                    Err(e) => {
+                        program.dispatch(Msg::ContractError(e));
+                    }
+                }
+            })
+        })
+    }
+
+    fn reset() -> Cmd<Self, Msg> {
+        Cmd::new(|program| {
+            spawn_local(async move {
+                match contract_reset().await {
+                    Ok(_) => {
+                        log::trace!("contract reset");
+                        program.dispatch(Msg::ContractReset);
                     }
                     Err(e) => {
                         program.dispatch(Msg::ContractError(e));
@@ -154,7 +177,7 @@ impl Application<Msg> for App {
                       </div>
                       <div class="selects row">
                         <div class="ab">
-                          <div id="a" class="r a">"RS"</div>
+                          <div id="a" class="r a" on_click=|_|Msg::ResetClicked>"RS"</div>
                           <div id="b" class="r b">"LE"</div>
                           <div id="c" class="r c">"RE"</div>
                           <div id="d" class="r d">"L"</div>
@@ -191,8 +214,13 @@ impl Application<Msg> for App {
                 self.val = None;
                 Self::decrement()
             }
+            Msg::ResetClicked => {
+                self.val = None;
+                Self::reset()
+            }
             Msg::ContractIncremented => Self::update_ui(),
             Msg::ContractDecremented => Self::update_ui(),
+            Msg::ContractReset => Self::update_ui(),
         }
     }
 }

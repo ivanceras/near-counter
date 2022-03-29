@@ -14,3 +14,7 @@ export function contract_increment() {
 export function contract_decrement() {
     return contract.decrement()
 }
+
+export function contract_reset() {
+    return contract.reset()
+}
