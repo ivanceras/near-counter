@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ev
+
 wasm-pack build --release --target=web && \
 
 rm -rf ../src/pkg/
@@ -7,6 +9,8 @@ rm -rf ../src/pkg/
 mkdir -p ../src/pkg/
 
 cp -r ./pkg/* ../src/pkg/
+
+mkdir -p ../dist/
 
 # copy the client_bg.wasm to the dist folder since parcel isn't able to process it.
 cp  ./pkg/client_bg.wasm ../dist/

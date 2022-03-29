@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "license": "(MIT AND Apache-2.0)",
   "scripts": {
-    "build": "cd contract && cargo build --target wasm32-unknown-unknown --release",
+    "build": "cd contract && cargo build --target wasm32-unknown-unknown --release && cd ../client && ./build.sh",
     "postbuild": "mkdir -p ./out && cp contract/target/wasm32-unknown-unknown/release/contract.wasm ./out/main.wasm",
     "deploy:contract": "near deploy",
     "deploy:pages": "gh-pages -d src",
