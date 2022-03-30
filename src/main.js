@@ -16,6 +16,8 @@ async function connect(nearConfig) {
     ...nearConfig
   });
 
+ window.nearConfig = nearConfig;
+
   // Needed to access wallet login
   window.walletConnection = new nearAPI.WalletConnection(window.near);
 
