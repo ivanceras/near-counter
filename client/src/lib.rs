@@ -94,8 +94,7 @@ impl App {
                     }
                     Err(e) => {
                         program.dispatch(Msg::ContractError(e));
-                    } //{view_if(!signed_in, self.view_signin_button())}
-                      //{view_if(signed_in, self.main_view())}
+                    }
                 }
             })
         })
