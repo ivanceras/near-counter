@@ -4,9 +4,9 @@ use wasm_bindgen_futures::spawn_local;
 
 #[wasm_bindgen(module = "/js/near-wrap.js")]
 extern "C" {
-    fn getAccountId() -> String;
+    fn get_account_id() -> String;
     #[wasm_bindgen(catch)]
-    async fn contractGetNum() -> Result<JsValue, JsValue>;
+    async fn contract_get_num() -> Result<JsValue, JsValue>;
 
     #[wasm_bindgen(catch)]
     async fn contract_increment() -> Result<JsValue, JsValue>;
@@ -50,7 +50,7 @@ impl App {
     fn update_ui() -> Cmd<Self, Msg> {
         Cmd::new(|program| {
             spawn_local(async move {
-                match contractGetNum().await {
+                match contract_get_num().await {
                     Ok(number) => {
                         let number = number.as_f64().expect("must be a number");
                         log::trace!("got value: {}", number);
@@ -120,7 +120,7 @@ impl Application<Msg> for App {
     }
 
     fn view(&self) -> Node<Msg> {
-        let signed_in = !getAccountId().is_empty();
+        let signed_in = !get_account_id().is_empty();
         node! {
         <div class="container">
           <h1>"This is just a counter, but this time on blockchain!"</h1>
@@ -230,6 +230,5 @@ pub fn start() {
     console_log::init_with_level(log::Level::Trace).unwrap();
     console_error_panic_hook::set_once();
     log::trace!("Hello from client rust");
-    log::debug!(" account_id {}", getAccountId());
     Program::mount_to_body(App::new());
 }
