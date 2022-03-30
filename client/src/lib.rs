@@ -203,13 +203,13 @@ impl App {
                         </div>
                         <div class="buttons">
                           <div class="row">
-                            <button id="plus" class="arrows" on_click=|_|Msg::IncrementClicked>
+                            <button id="plus" class="arrows" disabled={self.loading} on_click=|_|Msg::IncrementClicked>
                               <div class="left">
                               </div>
                               <div class="updown">
                               </div>
                             </button>
-                            <button id="minus" class="arrows" on_click=|_|Msg::DecrementClicked>
+                            <button id="minus" class="arrows" disabled={self.loading} on_click=|_|Msg::DecrementClicked>
                               <div class="right">
                               </div>
                             </button>
