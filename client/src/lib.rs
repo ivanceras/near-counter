@@ -41,18 +41,28 @@ enum Msg {
     ContractDecremented,
     /// the contract counter successfully reset
     ContractReset,
+    /// emitted when the c button is clicked
     ToggleLeftEye,
+    /// emitted when the b button is clicked
     ToggleRightEye,
+    /// emitted when the d button is clicked
     ToggleLightIndicator,
+    /// user clicks on the signout button
     SignOutClicked,
+    /// user clicks on the signin button
     SignInClicked,
 }
 
 struct App {
+    /// the value of counter in the contract
     val: Option<i32>,
+    /// flag when the app is loading the counter value
     loading: bool,
+    /// flag for the left eye if is opened or closed
     left_eye: bool,
+    /// flag for the right eye if is opened or closed
     right_eye: bool,
+    /// flag for the green light indicator when it is on or not.
     light_indicator: bool,
 }
 
@@ -67,6 +77,7 @@ impl App {
         }
     }
 
+    /// get the contract current value
     fn update_ui() -> Cmd<Self, Msg> {
         Cmd::new(|program| {
             spawn_local(async move {
@@ -85,6 +96,7 @@ impl App {
         })
     }
 
+    /// increment the contract value
     fn increment() -> Cmd<Self, Msg> {
         Cmd::new(|program| {
             spawn_local(async move {
@@ -101,6 +113,7 @@ impl App {
         })
     }
 
+    /// decrement the contract value
     fn decrement() -> Cmd<Self, Msg> {
         Cmd::new(|program| {
             spawn_local(async move {
@@ -117,6 +130,7 @@ impl App {
         })
     }
 
+    /// reset the contract value
     fn reset() -> Cmd<Self, Msg> {
         Cmd::new(|program| {
             spawn_local(async move {
@@ -133,6 +147,7 @@ impl App {
         })
     }
 
+    /// the view of the signin button
     fn view_signin_button(&self) -> Node<Msg> {
         node! {
              <div class="sign-in" on_click=|_|Msg::SignInClicked >
@@ -142,6 +157,7 @@ impl App {
         }
     }
 
+    /// the view of the sign out button
     fn view_signout_button(&self) -> Node<Msg> {
         node! {
               <div class="sign-out" on_click=|_|Msg::SignOutClicked >
@@ -150,6 +166,7 @@ impl App {
         }
     }
 
+    /// the main view displaying the gameboy gadget
     fn main_view(&self) -> Node<Msg> {
         let positive_cnt = if let Some(val) = self.val {
             val >= 0
