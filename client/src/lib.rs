@@ -1,4 +1,3 @@
-use sauron::html::attributes::style;
 use sauron::prelude::*;
 use wasm_bindgen_futures::spawn_local;
 
@@ -51,6 +50,7 @@ enum Msg {
 
 struct App {
     val: Option<i32>,
+    loading: bool,
     left_eye: bool,
     right_eye: bool,
     light_indicator: bool,
@@ -60,6 +60,7 @@ impl App {
     fn new() -> Self {
         App {
             val: None,
+            loading: false,
             left_eye: true,
             right_eye: false,
             light_indicator: false,
@@ -153,8 +154,7 @@ impl App {
         let positive_cnt = if let Some(val) = self.val {
             val >= 0
         } else {
-            // positive if it's still none
-            true
+            false
         };
 
         let within_range = if let Some(val) = self.val {
@@ -191,7 +191,7 @@ impl App {
                              }
                             </div>
                           </div>
-                          <div id="show" {if let Some(_val)=self.val{class("number")}else{class("loader")}}>
+                          <div id="show" {classes_flag([ ("loader", self.loading),("number", !self.loading)])}>
                             {
                                 if let Some(val) = self.val{
                                     text(val)
@@ -236,6 +236,7 @@ impl App {
 
 impl Application<Msg> for App {
     fn init(&mut self) -> Cmd<Self, Msg> {
+        self.loading = true;
         Self::update_ui()
     }
 
@@ -261,6 +262,7 @@ impl Application<Msg> for App {
         log::trace!("dispatching msg: {:?}", msg);
         match msg {
             Msg::ReceivedCount(val) => {
+                self.loading = false;
                 self.val = Some(val);
                 Cmd::none()
             }
@@ -269,20 +271,20 @@ impl Application<Msg> for App {
                 Cmd::none()
             }
             Msg::IncrementClicked => {
-                self.val = None;
+                self.loading = true;
                 Self::increment()
             }
             Msg::DecrementClicked => {
-                self.val = None;
+                self.loading = true;
                 Self::decrement()
             }
             Msg::ResetClicked => {
-                self.val = None;
+                self.loading = true;
                 Self::reset()
             }
-            Msg::ContractIncremented => Self::update_ui(),
-            Msg::ContractDecremented => Self::update_ui(),
-            Msg::ContractReset => Self::update_ui(),
+            Msg::ContractIncremented | Msg::ContractDecremented | Msg::ContractReset => {
+                Self::update_ui()
+            }
             Msg::ToggleLeftEye => {
                 self.left_eye = !self.left_eye;
                 Cmd::none()
