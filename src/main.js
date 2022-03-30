@@ -49,71 +49,8 @@ function errorHelper(err) {
   console.error(err);
 }
 
-function updateUI() {
-  if (!window.walletConnection.getAccountId()) {
-    Array.from(document.querySelectorAll('.sign-in')).map(it => it.style = 'display: block;');
-  } else {
-    Array.from(document.querySelectorAll('.after-sign-in')).map(it => it.style = 'display: block;');
-    contract.get_num().then(count => {
-      document.querySelector('#show').classList.replace('loader','number');
-      document.querySelector('#show').innerText = count === undefined ? 'calculating...' : count;
-      document.querySelector('#left').classList.toggle('eye');
-      document.querySelectorAll('button').forEach(button => button.disabled = false);
-      if (count >= 0) {
-        document.querySelector('.mouth').classList.replace('cry','smile');
-      } else {
-        document.querySelector('.mouth').classList.replace('smile','cry');
-      }
-      if (count > 20 || count < -20) {
-        document.querySelector('.tongue').style.display = 'block';
-      } else {
-        document.querySelector('.tongue').style.display = 'none';
-      }
-    }).catch(err => errorHelper(err));
-  }
-}
-
-document.querySelector('#plus').addEventListener('click', () => {
-  document.querySelectorAll('button').forEach(button => button.disabled = true);
-  document.querySelector('#show').classList.replace('number','loader');
-  document.querySelector('#show').innerText = '';
-  contract.increment().then(updateUI);
-});
-document.querySelector('#minus').addEventListener('click', () => {
-  document.querySelectorAll('button').forEach(button => button.disabled = true);
-  document.querySelector('#show').classList.replace('number','loader');
-  document.querySelector('#show').innerText = '';
-  contract.decrement().then(updateUI);
-});
-document.querySelector('#a').addEventListener('click', () => {
-  document.querySelectorAll('button').forEach(button => button.disabled = true);
-  document.querySelector('#show').classList.replace('number','loader');
-  document.querySelector('#show').innerText = '';
-  contract.reset().then(updateUI);
-});
-document.querySelector('#c').addEventListener('click', () => {
-  document.querySelector('#left').classList.toggle('eye');
-});
-document.querySelector('#b').addEventListener('click', () => {
-  document.querySelector('#right').classList.toggle('eye');
-});
-document.querySelector('#d').addEventListener('click', () => {
-  document.querySelector('.dot').classList.toggle('on');
-});
-
-// Log in user using NEAR Wallet on "Sign In" button click
-document.querySelector('.sign-in .btn').addEventListener('click', () => {
-  walletConnection.requestSignIn(nearConfig.contractName, 'Rust Counter Example');
-});
-
-document.querySelector('.sign-out .btn').addEventListener('click', () => {
-  walletConnection.signOut();
-  // TODO: Move redirect to .signOut() ^^^
-  window.location.replace(window.location.origin + window.location.pathname);
-});
 
 window.nearInitPromise = connect(nearConfig)
-    .then(updateUI)
     .catch(console.error);
 
 
