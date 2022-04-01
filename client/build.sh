@@ -8,7 +8,7 @@ rm -rf ../src/pkg/
 
 mkdir -p ../src/pkg/
 
-cp -r ./pkg/* ../src/pkg/
+cp -r ./pkg/client.js ./pkg/client_bg.wasm ./pkg/snippets ../src/pkg/
 
 mkdir -p ../dist/
 
