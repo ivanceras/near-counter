@@ -1,6 +1,7 @@
-
 Counter example in Rust
 =================================
+
+[![Open in Gitpod!](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/near-examples/rust-counter)
 
 <!-- MAGIC COMMENT: DO NOT DELETE! Everything above this line is hidden on NEAR Examples page -->
 
@@ -15,7 +16,7 @@ Plus and minus buttons increase and decrease value correspondingly. When button 
 Open in the Gitpod link above or clone the repository.
 
 ```
-git clone https://github.com/ivanceras/near-counter
+git clone https://github.com/near-examples/rust-counter
 ```
 
 
@@ -93,8 +94,7 @@ cargo test -- --nocapture
 ## To Explore
 
 - `contract/src/lib.rs` for the contract code
-- `client/src/lib.rs` front-end code with interactive UI
-- `src/index.html` for the front-end HTML which link the client web app written in rust
+- `src/index.html` for the front-end HTML
 - `src/main.js` for the JavaScript front-end code and how to integrate contracts
 - `src/test.js` for the JS tests for the contract
 

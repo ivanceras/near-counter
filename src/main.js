@@ -3,7 +3,6 @@ import * as nearAPI from "near-api-js";
 import getConfig from "./config";
 import init from "./pkg/client.js";
 
-
 const nearConfig = getConfig(process.env.NODE_ENV || "development");
 
 async function connect(nearConfig) {
@@ -16,8 +15,7 @@ async function connect(nearConfig) {
     ...nearConfig
   });
 
- window.nearConfig = nearConfig;
-
+  window.nearConfig = nearConfig;
   // Needed to access wallet login
   window.walletConnection = new nearAPI.WalletConnection(window.near);
 

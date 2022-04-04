@@ -1,4 +1,3 @@
-
 const CONTRACT_NAME = process.env.CONTRACT_NAME || 'demo-counter.testnet'; /* TODO: change this to your account */
 
 function getConfig (env) {
