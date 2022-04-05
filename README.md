@@ -104,3 +104,19 @@ cargo test -- --nocapture
 cd contract
 cargo doc --no-deps --open
 ```
+
+## To interact with the countract using cli
+Get the current count
+```
+near view demo-counter.testnet get_num
+```
+
+Increment the counter of the contract
+```
+near call demo-counter.testnet increment --account_id demo-counter.testnet
+```
+
+Decrement the counter of the contract
+```
+near call demo-counter.testnet decrement --account_id demo-counter.testnet
+```
