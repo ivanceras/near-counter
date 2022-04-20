@@ -7,6 +7,7 @@ describe('Token', function () {
     console.log('nearConfig', nearConfig);
     near = await nearlib.connect(nearConfig);
     accountId = nearConfig.contractName;
+      console.log("accountId:", accountId);
     contract = await near.loadContract(nearConfig.contractName, {
       viewMethods: ['get_num'],
       changeMethods: ['increment', 'decrement', 'reset'],
@@ -20,20 +21,20 @@ describe('Token', function () {
       await contract.increment();
       const endCounter = await contract.get_num();
       expect(endCounter).toEqual(startCounter + 1);
-    });
+    }, 10000);
     it('can be decremented', async function () {
       await contract.increment();
       const startCounter = await contract.get_num();
       await contract.decrement();
       const endCounter = await contract.get_num();
       expect(endCounter).toEqual(startCounter - 1);
-    });
+    }, 10000);
     it('can be reset', async function () {
       await contract.increment();
       const startCounter = await contract.get_num();
       await contract.reset();
       const endCounter = await contract.get_num();
       expect(endCounter).toEqual(0);
-    });
+    }, 10000);
   });
 });
